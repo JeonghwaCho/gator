@@ -104,7 +104,7 @@ namespace mali_userspace
                     int ignored;
                     if (sscanf(miscChildEntry->name().c_str(), "mali%d", &ignored) == 1) {
                         devicePath = lib::FsEntry::create(lib::FsEntry::create("/dev"), miscChildEntry->name());
-                        clockPath = lib::FsEntry::create(*miscChildEntry, "clock");
+                        clockPath = lib::FsEntry::create(*miscChildEntry, "devfreq/devfreq0");
                     }
                     else {
                         logg.logMessage("enumerateMaliHwCntrDrivers - skipping '%s'", miscChildEntry->path().c_str());
@@ -117,7 +117,7 @@ namespace mali_userspace
                 }
 
                 if ((!clockPath.valid()) || (!clockPath->canAccess(true, false, false))) {
-                    clockPath = lib::FsEntry::create(*childEntry, "clock");
+                    clockPath = lib::FsEntry::create(*childEntry, "devfreq/devfreq0");
                 }
 
                 // create the device object

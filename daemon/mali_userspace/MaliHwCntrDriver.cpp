@@ -79,7 +79,7 @@ namespace mali_userspace
                       mClockValue(0),
                       mBuf()
             {
-                logg.logMessage("GPU CLOCK POLLING '%s'", clockPath);
+                logg.logMessage("[XU4] GPU CLOCK POLLING '%s'", clockPath);
             }
 
             // Intentionally unimplemented
