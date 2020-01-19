@@ -67,22 +67,26 @@ namespace mali_userspace
                 char model[33];
                 int mpNumber, rValue, pValue;
                 unsigned int gpuId;
-                int fscanfResult = fscanf(gpuinfoFile, "%32s MP%d r%dp%d 0x%04X", model, &mpNumber, &rValue, &pValue, &gpuId);
-                if (fscanfResult != 5) {
-                    fseek(gpuinfoFile, 0, SEEK_SET);
-                    fscanfResult = fscanf(gpuinfoFile, "%32s %d cores r%dp%d 0x%04X", model, &mpNumber, &rValue, &pValue, &gpuId);
-                    if (fscanfResult != 5) {
-                        fseek(gpuinfoFile, 0, SEEK_SET);
-                        fscanfResult = fscanf(gpuinfoFile, "%32s %d core r%dp%d 0x%04X", model, &mpNumber, &rValue, &pValue, &gpuId);
+		int fscanfResult = fscanf(gpuinfoFile, "%32s MP%d r%dp%d 0x%04X", model, &mpNumber, &rValue, &pValue, &gpuId);
+		if (fscanfResult != 5) {
+			fseek(gpuinfoFile, 0, SEEK_SET);
+			fscanfResult = fscanf(gpuinfoFile, "%32s %d cores r%dp%d 0x%04X", model, &mpNumber, &rValue, &pValue, &gpuId);
+			if (fscanfResult != 5) {
+				fseek(gpuinfoFile, 0, SEEK_SET);
+				fscanfResult = fscanf(gpuinfoFile, "%32s %d core r%dp%d 0x%04X", model, &mpNumber, &rValue, &pValue, &gpuId);
+				if (fscanfResult != 5) {
+					fseek(gpuinfoFile, 0, SEEK_SET);
+					fscanfResult = fscanf(gpuinfoFile, "%32s %d cores 2EE r%dp%d 0x%04X", model, &mpNumber, &rValue, &pValue, &gpuId);
 
-                        fclose(gpuinfoFile);
+					fclose(gpuinfoFile);
 
-                        if (fscanfResult != 5) {
-                            logg.logError("enumerateMaliHwCntrDrivers - failed to parse '%s'", gpuinfoEntry.path().c_str());
-                            continue;
-                        }
-                    }
-                }
+					if (fscanfResult != 5) {
+						logg.logError("enumerateMaliHwCntrDrivers - failed to parse '%s'", gpuinfoEntry.path().c_str());
+						continue;
+					}
+				}
+			}
+		}
 
                 logg.logMessage("enumerateMaliHwCntrDrivers - Detected valid gpuinfo file '%s' with '%s MP%d r%dp%d 0x%04X'",
                                 gpuinfoEntry.path().c_str(), model, mpNumber, rValue, pValue, gpuId);
